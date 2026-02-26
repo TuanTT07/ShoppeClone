@@ -5,7 +5,7 @@ export default function Login() {
     <div className="bg-orange">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10">
         <div className="lg:col-span-2 lg:col-start-4">
-          <form className="p-10 rounded bg-white shadow-sm">
+          <form className="p-10 rounded bg-white shadow-sm" onSubmit={() => {}}>
             <div className="text-2xl">Đăng Nhập</div>
             <div className="mt-8">
               <input
@@ -27,7 +27,10 @@ export default function Login() {
             </div>
 
             <div className="mt-4">
-              <button className="w-full  py-4 px-2 uppercase bg-red-500 text-white text-sm text-center hover:bg-red-600">
+              <button
+                type="submit"
+                className="w-full  py-4 px-2 uppercase bg-red-500 text-white text-sm text-center hover:bg-red-600"
+              >
                 Đăng nhập
               </button>
             </div>
