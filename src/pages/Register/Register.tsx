@@ -1,17 +1,18 @@
 import { useForm } from 'react-hook-form';
-import { getRules, type FormData } from '../../utils/rules';
 import { Link } from 'react-router';
 import Input from '../../components/input';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema, type schemaType } from '../../utils/rules';
 
 export default function Register() {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<schemaType>({
+    resolver: yupResolver(schema),
+  });
 
-  const rules = getRules(getValues);
   const onSubmit = handleSubmit(
     () => {
       // console.log(data);
@@ -34,7 +35,6 @@ export default function Register() {
               className="mt-8"
               register={register}
               errorMessage={errors.email?.message}
-              rules={rules.email}
             />
 
             <Input
@@ -44,7 +44,6 @@ export default function Register() {
               className="mt-2"
               register={register}
               errorMessage={errors.password?.message}
-              rules={rules.password}
             />
             <Input
               name="confirmPassword"
@@ -53,7 +52,6 @@ export default function Register() {
               className="mt-2"
               register={register}
               errorMessage={errors.confirmPassword?.message}
-              rules={rules.confirmPassword}
             />
 
             <div className="mt-2">
