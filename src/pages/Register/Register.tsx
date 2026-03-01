@@ -3,7 +3,9 @@ import { Link } from 'react-router';
 import Input from '../../components/input';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema, type schemaType } from '../../utils/rules';
-
+import { useMutation } from '@tanstack/react-query';
+import { resgisterAccount } from '../../apis/auth.api';
+import { omit } from 'lodash';
 export default function Register() {
   const {
     register,
@@ -13,14 +15,16 @@ export default function Register() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = handleSubmit(
-    () => {
-      // console.log(data);
+  const resgisterAccountMutation = useMutation({
+    mutationFn: (body: Omit<schemaType, 'confirm_password'>) => {
+      return resgisterAccount(body);
     },
-    () => {
-      // console.log(errors);
-    }
-  );
+  });
+
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ['confirm_password']);
+    resgisterAccountMutation.mutate(body);
+  });
 
   return (
     <div className="bg-orange">
@@ -46,12 +50,12 @@ export default function Register() {
               errorMessage={errors.password?.message}
             />
             <Input
-              name="confirmPassword"
+              name="confirm_password"
               type="password"
               placeholder="Confirm Password"
               className="mt-2"
               register={register}
-              errorMessage={errors.confirmPassword?.message}
+              errorMessage={errors.confirm_password?.message}
             />
 
             <div className="mt-2">

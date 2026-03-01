@@ -44,7 +44,7 @@ export const schema = yup.object({
     .required('Password là bắt buộc')
     .max(160, 'Password không được vượt quá 160 ký tự')
     .min(6, 'Password phải có ít nhất 6 ký tự'),
-  confirmPassword: yup
+  confirm_password: yup
     .string()
     .required('Confirm Password là bắt buộc')
     .max(160, 'Confirm Password không được vượt quá 160 ký tự')
