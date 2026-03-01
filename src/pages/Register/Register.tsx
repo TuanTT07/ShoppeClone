@@ -6,10 +6,13 @@ import { schema, type schemaType } from '../../utils/rules';
 import { useMutation } from '@tanstack/react-query';
 import { resgisterAccount } from '../../apis/auth.api';
 import { omit } from 'lodash';
+import { isAxiosUnprocessableEntityError } from '../../utils/utils';
+import type { Response } from '../../types/utils.type';
 export default function Register() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<schemaType>({
     resolver: yupResolver(schema),
@@ -23,7 +26,28 @@ export default function Register() {
 
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password']);
-    resgisterAccountMutation.mutate(body);
+    resgisterAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntityError<Response<Omit<schemaType, 'confirm_password'>>>(error)) {
+          const formError = error.response?.data.data;
+          if (formError?.email) {
+            setError('email', {
+              message: formError?.email,
+              type: 'Server',
+            });
+          }
+          if (formError?.password) {
+            setError('password', {
+              message: formError?.password,
+              type: 'Server',
+            });
+          }
+        }
+      },
+    });
   });
 
   return (
