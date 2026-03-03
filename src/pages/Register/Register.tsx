@@ -8,6 +8,7 @@ import { resgisterAccount } from '../../apis/auth.api';
 import { omit } from 'lodash';
 import { isAxiosUnprocessableEntityError } from '../../utils/utils';
 import type { Response } from '../../types/utils.type';
+
 export default function Register() {
   const {
     register,
